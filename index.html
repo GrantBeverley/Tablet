@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown Table with Line Chart</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    select {
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    td#dateTimeCell {
+      font-weight: bold;
+      color: #3366cc;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>Operator / Job Configuration</h1>
+
+  <label for="dropdown1">Select Line:</label>
+  <select id="dropdown1" onchange="updateTable()">
+    <option value="Line 1">Line 1</option>
+    <option value="Line 2">Line 2</option>
+    <option value="Line 3">Line 3</option>
+  </select>
+  <br><br>
+
+  <label for="dropdown2">Select Operator:</label>
+  <select id="dropdown2" onchange="updateTable()">
+    <option value="Steve Smith">Steve Smith</option>
+    <option value="Dave Jones">Dave Jones</option>
+    <option value="Peter Ellis">Peter Ellis</option>
+  </select>
+  <br><br>
+
+  <label for="dropdown3">Select Product:</label>
+  <select id="dropdown3" onchange="updateTable()">
+    <option value="Filo pastry something or other">Filo pastry something or other</option>
+    <option value="Another type of filo pastry">Another type of filo pastry</option>
+    <option value="Filo filo filo pastry stuff">Filo filo filo pastry stuff</option>
+  </select>
+  <br><br><br><br>
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Line</th>
+        <th>Operator</th>
+        <th>Product</th>
+        <th>Live Date & Time</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Table content will be dynamically populated here -->
+    </tbody>
+  </table>
+
+  <div id="chart"></div>
+
+  <script>
+    function updateTable() {
+      // Get selected values from dropdowns
+      var dropdown1Value = document.getElementById("dropdown1").value;
+      var dropdown2Value = document.getElementById("dropdown2").value;
+      var dropdown3Value = document.getElementById("dropdown3").value;
+  
+      // Get the tbody element
+      var tbody = document.getElementById("tableBody");
+  
+      // Remove existing rows
+      tbody.innerHTML = "";
+  
+      // Build the table row with unique identifiers for each cell
+      var tableRow = "<tr>";
+      tableRow += "<td id='lineCell'>" + dropdown1Value + "</td>";
+      tableRow += "<td id='operatorCell'>" + dropdown2Value + "</td>";
+      tableRow += "<td id='productCell'>" + dropdown3Value + "</td>";
+      tableRow += "<td id='dateTimeCell'></td>";
+      tableRow += "</tr>";
+  
+      // Append the new row to the tbody
+      tbody.innerHTML = tableRow;
+  
+      // Update the date and time cell
+      updateDateTime();
+    }
+  
+    function updateDateTime() {
+      // Get current date and time
+      var currentDate = new Date();
+      var formattedDate = currentDate.toLocaleString();
+  
+      // Update the date and time cell
+      document.getElementById("dateTimeCell").innerHTML = formattedDate;
+    }
+  
+    // Update the date and time every second (1000 milliseconds)
+    setInterval(updateDateTime, 1000);
+  
+    // Initial table update
+    updateTable();
+  </script>
+
+</body>
+</html>
