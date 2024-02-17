@@ -78,19 +78,12 @@
         <th>Live Date & Time</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td id="lineCell"></td>
-        <td id="operatorCell"></td>
-        <td id="productCell"></td>
-        <td id="dateTimeCell"></td>
-      </tr>
+    <tbody id="tableBody">
+      <!-- Table content will be dynamically populated here -->
     </tbody>
   </table>
 
   <div id="chart"></div>
-
-  <a id="downloadLink" style="display: none;">Download CSV</a>
 
   <script>
     function updateTable() {
@@ -99,32 +92,21 @@
       var dropdown2Value = document.getElementById("dropdown2").value;
       var dropdown3Value = document.getElementById("dropdown3").value;
 
-      // Set the inner text of each cell explicitly
-      document.getElementById("lineCell").innerText = dropdown1Value;
-      document.getElementById("operatorCell").innerText = dropdown2Value;
-      document.getElementById("productCell").innerText = dropdown3Value;
-
-      // Update the date and time cell
-      updateDateTime();
-
-      // Show the "Download CSV" link
-      document.getElementById("downloadLink").style.display = "block";
-    }
-
-    function updateDateTime() {
       // Get current date and time
       var currentDate = new Date();
       var formattedDate = currentDate.toLocaleString();
 
-      // Update the date and time cell
-      document.getElementById("dateTimeCell").innerText = formattedDate;
+      // Build the table row
+      var tableRow = "<tr>";
+      tableRow += "<td>" + dropdown1Value + "</td>";
+      tableRow += "<td>" + dropdown2Value + "</td>";
+      tableRow += "<td>" + dropdown3Value + "</td>";
+      tableRow += "<td>" + formattedDate + "</td>";
+      tableRow += "</tr>";
+
+      // Update the table content
+      document.getElementById("tableBody").innerHTML = tableRow;
     }
-
-    // Update the date and time every second (1000 milliseconds)
-    setInterval(updateDateTime, 1000);
-
-    // Initial table update
-    updateTable();
   </script>
 
 </body>
