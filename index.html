@@ -100,68 +100,40 @@
 
     <div id="chart"></div>
 
-    <script>
-        var rowData = {
-            line: '',
-            operator: '',
-            product: ''
-        };
-
-        function updateTable() {
-            var dropdown1Value = document.getElementById("dropdown1").value;
-            var dropdown2Value = document.getElementById("dropdown2").value;
-            var dropdown3Value = document.getElementById("dropdown3").value;
-
-            updateDateTime();
-
-            rowData.line = dropdown1Value;
-            rowData.operator = dropdown2Value;
-            rowData.product = dropdown3Value;
-
-            // Expose the data as JSON
-            exposeDataAsJson();
-            
-            // Update the table from the exposed data
-            updateTableFromData();
-        }
-
-        function updateDateTime() {
-            var currentDate = new Date();
-            var formattedDate = currentDate.toLocaleString();
-            document.getElementById("dateTimeCell").innerText = formattedDate;
-        }
-
-        function exposeDataAsJson() {
-            var jsonData = {
-                line: rowData.line,
-                operator: rowData.operator,
-                product: rowData.product,
-                dateTime: document.getElementById("dateTimeCell").innerText
-            };
-
-            // Expose the data as JSON in a script tag
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.text = 'var exposedData = ' + JSON.stringify(jsonData);
-            document.head.appendChild(script);
-        }
-
-        function updateTableFromData() {
-            // Get the row element
-            var row = document.getElementById("resultTable").rows[1];
-
-            // Set the inner text of each cell explicitly
-            row.cells[0].innerText = exposedData.line;
-            row.cells[1].innerText = exposedData.operator;
-            row.cells[2].innerText = exposedData.product;
-            row.cells[3].innerText = exposedData.dateTime;
-        }
-
-        setInterval(updateDateTime, 1000);
-
-        // Initial table update
-        updateTable();
-    </script>
+    <script type="text/javascript">
+      // ... your existing JavaScript code ...
+  
+      function exposeDataAsJsonEndpoint() {
+          var jsonData = {
+              line: exposedData.line,
+              operator: exposedData.operator,
+              product: exposedData.product,
+              dateTime: exposedData.dateTime
+          };
+  
+          // Convert the JSON data to a string
+          var jsonString = JSON.stringify(jsonData);
+  
+          // Create a data URI for the JSON string
+          var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonString);
+  
+          // Create a link element for downloading the JSON file
+          var downloadLink = document.createElement('a');
+          downloadLink.href = dataUri;
+          downloadLink.download = 'data.json';
+  
+          // Append the link to the body and trigger a click event
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+  
+          // Remove the link from the body
+          document.body.removeChild(downloadLink);
+      }
+  
+      // Call the function to expose the data as JSON when the page loads
+      exposeDataAsJsonEndpoint();
+  </script>
+  
 
 </body>
 
