@@ -106,20 +106,14 @@
             var dropdown2Value = document.getElementById("dropdown2").value;
             var dropdown3Value = document.getElementById("dropdown3").value;
 
-            updateDateTime();
+            var currentDate = new Date();
+            var formattedDate = currentDate.toLocaleString();
 
             document.getElementById("lineCell").innerText = dropdown1Value;
             document.getElementById("operatorCell").innerText = dropdown2Value;
             document.getElementById("productCell").innerText = dropdown3Value;
-        }
-
-        function updateDateTime() {
-            var currentDate = new Date();
-            var formattedDate = currentDate.toLocaleString();
             document.getElementById("dateTimeCell").innerText = formattedDate;
         }
-
-        setInterval(updateDateTime, 1000);
 
         // Initial table update
         updateTable();
@@ -128,6 +122,7 @@
 </body>
 
 </html>
+
 
 
 
