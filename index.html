@@ -1,131 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dropdown Table with Line Chart</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 20px;
-    }
-    h1 {
-      color: #333;
-    }
-    label {
-      margin-right: 10px;
-      font-weight: bold;
-    }
-    select {
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-    th {
-      background-color: #4CAF50;
-      color: white;
-    }
-    td#dateTimeCell {
-      font-weight: bold;
-      color: #3366cc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Table with Line Chart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td#dateTimeCell {
+            font-weight: bold;
+            color: #3366cc;
+        }
+    </style>
 </head>
+
 <body>
 
-  <h1>Operator / Job Configuration</h1>
+    <h1>Operator / Job Configuration</h1>
 
-  <label for="dropdown1">Select Line:</label>
-  <select id="dropdown1" onchange="updateTable()">
-    <option value="Line 1">Line 1</option>
-    <option value="Line 2">Line 2</option>
-    <option value="Line 3">Line 3</option>
-  </select>
-  <br><br>
+    <label for="dropdown1">Select Line:</label>
+    <select id="dropdown1" onchange="updateTable()">
+        <option value="Line 1">Line 1</option>
+        <option value="Line 2">Line 2</option>
+        <option value="Line 3">Line 3</option>
+    </select>
+    <br><br>
 
-  <label for="dropdown2">Select Operator:</label>
-  <select id="dropdown2" onchange="updateTable()">
-    <option value="Steve Smith">Steve Smith</option>
-    <option value="Dave Jones">Dave Jones</option>
-    <option value="Peter Ellis">Peter Ellis</option>
-  </select>
-  <br><br>
+    <label for="dropdown2">Select Operator:</label>
+    <select id="dropdown2" onchange="updateTable()">
+        <option value="Steve Smith">Steve Smith</option>
+        <option value="Dave Jones">Dave Jones</option>
+        <option value="Peter Ellis">Peter Ellis</option>
+    </select>
+    <br><br>
 
-  <label for="dropdown3">Select Product:</label>
-  <select id="dropdown3" onchange="updateTable()">
-    <option value="Filo pastry something or other">Filo pastry something or other</option>
-    <option value="Another type of filo pastry">Another type of filo pastry</option>
-    <option value="Filo filo filo pastry stuff">Filo filo filo pastry stuff</option>
-  </select>
-  <br><br><br><br>
+    <label for="dropdown3">Select Product:</label>
+    <select id="dropdown3" onchange="updateTable()">
+        <option value="Filo pastry something or other">Filo pastry something or other</option>
+        <option value="Another type of filo pastry">Another type of filo pastry</option>
+        <option value="Filo filo filo pastry stuff">Filo filo filo pastry stuff</option>
+    </select>
+    <br><br><br><br>
 
-  <table id="resultTable">
-    <thead>
-      <tr>
-        <th>Line</th>
-        <th>Operator</th>
-        <th>Product</th>
-        <th>Live Date & Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td id="lineCell"></td>
-        <td id="operatorCell"></td>
-        <td id="productCell"></td>
-        <td id="dateTimeCell"></td>
-      </tr>
-    </tbody>
-  </table>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Line</th>
+                <th>Operator</th>
+                <th>Product</th>
+                <th>Live Date & Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="lineCell"></td>
+                <td id="operatorCell"></td>
+                <td id="productCell"></td>
+                <td id="dateTimeCell"></td>
+            </tr>
+        </tbody>
+    </table>
 
-  <div id="chart"></div>
+    <div id="chart"></div>
 
-  <a id="downloadLink" style="display: none;">Download CSV</a>
+    <script>
+        var rowData = {
+            line: '',
+            operator: '',
+            product: ''
+        };
 
-  <script>
-    function updateTable() {
-      // Get selected values from dropdowns
-      var dropdown1Value = document.getElementById("dropdown1").value;
-      var dropdown2Value = document.getElementById("dropdown2").value;
-      var dropdown3Value = document.getElementById("dropdown3").value;
+        function updateTable() {
+            var dropdown1Value = document.getElementById("dropdown1").value;
+            var dropdown2Value = document.getElementById("dropdown2").value;
+            var dropdown3Value = document.getElementById("dropdown3").value;
 
-      // Set the inner text of each cell explicitly
-      document.getElementById("lineCell").innerText = dropdown1Value;
-      document.getElementById("operatorCell").innerText = dropdown2Value;
-      document.getElementById("productCell").innerText = dropdown3Value;
+            updateDateTime();
 
-      // Update the date and time cell
-      updateDateTime();
+            rowData.line = dropdown1Value;
+            rowData.operator = dropdown2Value;
+            rowData.product = dropdown3Value;
 
-      // Show the "Download CSV" link
-      // document.getElementById("downloadLink").style.display = "block";
-    }
+            // Expose the data as JSON
+            exposeDataAsJson();
+            
+            // Update the table from the exposed data
+            updateTableFromData();
+        }
 
-    function updateDateTime() {
-      // Get current date and time
-      var currentDate = new Date();
-      var formattedDate = currentDate.toLocaleString();
+        function updateDateTime() {
+            var currentDate = new Date();
+            var formattedDate = currentDate.toLocaleString();
+            document.getElementById("dateTimeCell").innerText = formattedDate;
+        }
 
-      // Update the date and time cell
-      document.getElementById("dateTimeCell").innerText = formattedDate;
-    }
+        function exposeDataAsJson() {
+            var jsonData = {
+                line: rowData.line,
+                operator: rowData.operator,
+                product: rowData.product,
+                dateTime: document.getElementById("dateTimeCell").innerText
+            };
 
-    // Update the date and time every second (1000 milliseconds)
-    setInterval(updateDateTime, 1000);
+            // Expose the data as JSON in a script tag
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.text = 'var exposedData = ' + JSON.stringify(jsonData);
+            document.head.appendChild(script);
+        }
 
-    // Initial table update
-    updateTable();
-  </script>
+        function updateTableFromData() {
+            // Get the row element
+            var row = document.getElementById("resultTable").rows[1];
+
+            // Set the inner text of each cell explicitly
+            row.cells[0].innerText = exposedData.line;
+            row.cells[1].innerText = exposedData.operator;
+            row.cells[2].innerText = exposedData.product;
+            row.cells[3].innerText = exposedData.dateTime;
+        }
+
+        setInterval(updateDateTime, 1000);
+
+        // Initial table update
+        updateTable();
+    </script>
 
 </body>
+
 </html>
+
+
