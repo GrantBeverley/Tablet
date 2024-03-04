@@ -103,7 +103,7 @@
     <script type="text/javascript">
       // ... your existing JavaScript code ...
   
-      function exposeDataAsJsonEndpoint() {
+      function exposeDataAsJson() {
           var jsonData = {
               line: exposedData.line,
               operator: exposedData.operator,
@@ -111,28 +111,14 @@
               dateTime: exposedData.dateTime
           };
   
-          // Convert the JSON data to a string
-          var jsonString = JSON.stringify(jsonData);
-  
-          // Create a data URI for the JSON string
-          var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonString);
-  
-          // Create a link element for downloading the JSON file
-          var downloadLink = document.createElement('a');
-          downloadLink.href = dataUri;
-          downloadLink.download = 'data.json';
-  
-          // Append the link to the body and trigger a click event
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-  
-          // Remove the link from the body
-          document.body.removeChild(downloadLink);
+          // Convert the JSON data to a string and set it as a property on an HTML element
+          document.getElementById("json-data").innerText = JSON.stringify(jsonData);
       }
   
       // Call the function to expose the data as JSON when the page loads
-      exposeDataAsJsonEndpoint();
+      exposeDataAsJson();
   </script>
+  
   
 
 </body>
