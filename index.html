@@ -101,6 +101,11 @@
     <div id="chart"></div>
 
 <script>
+    // Expose the data on page load
+    window.onload = function() {
+        exposeDataForPowerQuery();
+    }
+
     function exposeDataForPowerQuery() {
         var dataForPowerQuery = {
             line: document.getElementById("lineCell").innerText,
@@ -109,12 +114,15 @@
             dateTime: document.getElementById("dateTimeCell").innerText
         };
 
-        return JSON.stringify(dataForPowerQuery);
+        // Create a hidden div to store the data
+        var dataContainer = document.createElement('div');
+        dataContainer.id = 'dataContainer';
+        dataContainer.style.display = 'none';
+        dataContainer.innerText = JSON.stringify(dataForPowerQuery);
+        document.body.appendChild(dataContainer);
     }
-
-    // Expose the data on page load
-    exposeDataForPowerQuery();
 </script>
+
 
 
 
