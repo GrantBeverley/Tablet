@@ -100,22 +100,32 @@
 
     <div id="chart"></div>
 
-   <script>
-    function exposeDataForPowerQuery() {
-        var dataForPowerQuery = {
-            line: document.getElementById("lineCell").innerText,
-            operator: document.getElementById("operatorCell").innerText,
-            product: document.getElementById("productCell").innerText,
-            dateTime: document.getElementById("dateTimeCell").innerText
-        };
+    <script>
+        function updateTable() {
+            var dropdown1Value = document.getElementById("dropdown1").value;
+            var dropdown2Value = document.getElementById("dropdown2").value;
+            var dropdown3Value = document.getElementById("dropdown3").value;
 
-        return JSON.stringify(dataForPowerQuery);
-    }
-</script>
+            var currentDate = new Date();
+            var formattedDate = currentDate.toLocaleString();
+
+            document.getElementById("lineCell").innerText = dropdown1Value;
+            document.getElementById("operatorCell").innerText = dropdown2Value;
+            document.getElementById("productCell").innerText = dropdown3Value;
+            document.getElementById("dateTimeCell").innerText = formattedDate;
+
+            // Expose the data for Power Query
+            exposeDataForPowerQuery();
+        }
+
+        // Initial table update
+        updateTable();
+    </script>
 
 </body>
 
 </html>
+
 
 
 
