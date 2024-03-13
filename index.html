@@ -100,38 +100,71 @@
 
     <div id="chart"></div>
 
-<script>
-    // Expose the data on page load
-    window.onload = function() {
-        exposeDataForPowerQuery();
-    }
+    <!-- Placeholder div for the JSON data -->
+    <div id="json-data" data-json=""></div>
 
-    function exposeDataForPowerQuery() {
-        var dataForPowerQuery = {
-            line: document.getElementById("lineCell").innerText,
-            operator: document.getElementById("operatorCell").innerText,
-            product: document.getElementById("productCell").innerText,
-            dateTime: document.getElementById("dateTimeCell").innerText
+    <script>
+        var rowData = {
+            line: '',
+            operator: '',
+            product: ''
         };
 
-        // Create a hidden div to store the data
-        var dataContainer = document.createElement('div');
-        dataContainer.id = 'dataContainer';
-        dataContainer.style.display = 'none';
-        dataContainer.innerText = JSON.stringify(dataForPowerQuery);
-        document.body.appendChild(dataContainer);
-    }
-</script>
+        function updateTable() {
+            var dropdown1Value = document.getElementById("dropdown1").value;
+            var dropdown2Value = document.getElementById("dropdown2").value;
+            var dropdown3Value = document.getElementById("dropdown3").value;
 
+            updateDateTime();
 
+            rowData.line = dropdown1Value;
+            rowData.operator = dropdown2Value;
+            rowData.product = dropdown3Value;
 
+            // Expose the data as JSON
+            exposeDataAsJson();
+            
+            // Update the table from the exposed data
+            updateTableFromData();
+        }
+
+        function updateDateTime() {
+            var currentDate = new Date();
+            var formattedDate = currentDate.toLocaleString();
+            document.getElementById("dateTimeCell").innerText = formattedDate;
+        }
+
+        function exposeDataAsJson() {
+            var jsonData = {
+                line: rowData.line,
+                operator: rowData.operator,
+                product: rowData.product,
+                dateTime: document.getElementById("dateTimeCell").innerText
+            };
+
+            // Convert the JSON data to a string and set it as a data attribute
+            document.getElementById("json-data").setAttribute("data-json", JSON.stringify(jsonData));
+        }
+
+        function updateTableFromData() {
+            var exposedData = JSON.parse(document.getElementById("json-data").getAttribute("data-json"));
+
+            var row = document.getElementById("resultTable").rows[1];
+            row.cells[0].innerText = exposedData.line;
+            row.cells[1].innerText = exposedData.operator;
+            row.cells[2].innerText = exposedData.product;
+            row.cells[3].innerText = exposedData.dateTime;
+        }
+
+        setInterval(updateDateTime, 1000);
+
+        // Initial table update
+        updateTable();
+    </script>
 
 </body>
 
 </html>
-
-
-
 
 
 
